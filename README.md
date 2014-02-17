@@ -31,16 +31,16 @@ General migration command for WP-CLI
     
     ```Shell
         # Migrate to version 1
-        wp --require=bootstrap.php mig to 1
+        wp --require=command.php mig to 1
 
         # Migrate to version 2
-        wp --require=bootstrap.php mig to 2
+        wp --require=command.php mig to 2
         
         # Revert all migrations
-        wp --require=bootstrap.php mig to 0
+        wp --require=command.php mig to 0
 
         # Status
-        wp --require=bootstrap.php mig status
+        wp --require=command.php mig status
     ```
 
 For migrations that should stop execution, throw exceptions from up/down-methods. I.e.
