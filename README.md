@@ -27,20 +27,20 @@ General migration command for WP-CLI
     }
     ```
 
-2. Execute script using WP-CLI
+2. Move into folder migrations and execute migrations using WP-CLI
     
     ```Shell
         # Migrate to version 1
-        wp --require=command.php mig to 1
+        wp --require=/path/to/command.php mig to 1
 
         # Migrate to version 2
-        wp --require=command.php mig to 2
+        wp --require=/path/to/command.php mig to 2
         
         # Revert all migrations
-        wp --require=command.php mig to 0
+        wp --require=/path/to/command.php mig to 0
 
         # Status
-        wp --require=command.php mig status
+        wp --require=/path/to/command.php mig status
     ```
 
 For migrations that should stop execution, throw exceptions from up/down-methods. I.e.
