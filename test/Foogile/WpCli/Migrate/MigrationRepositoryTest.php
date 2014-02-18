@@ -10,7 +10,7 @@ class MigrationRepositoryTest extends \PHPUnit_Framework_TestCase
     /**
      * @var MigrationRepository
      */
-    private $loader;
+    private $repository;
     
     private $storageMock;
     
@@ -18,7 +18,7 @@ class MigrationRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
         $this->storageMock = $this->getMock('Foogile\WpCli\Migrate\Storage', array('get', 'update'));
-        $this->loader = new MigrationRepository($this->storageMock, __DIR__ . '/fixtures', '\TestMigration');
+        $this->repository = new MigrationRepository($this->storageMock, __DIR__ . '/fixtures', '\TestMigration');
     }
     
     /**
@@ -26,7 +26,7 @@ class MigrationRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function test_isMigrationFile_returns_true_for_valid_files($filename)
     {
-        $this->assertTrue($this->loader->isMigrationFile($filename));
+        $this->assertTrue($this->repository->isMigrationFile($filename));
     }
     
     /**
@@ -34,7 +34,7 @@ class MigrationRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function test_isMigrationFile_returns_false_for_invalid_files($filename)
     {
-        $this->assertFalse($this->loader->isMigrationFile($filename));
+        $this->assertFalse($this->repository->isMigrationFile($filename));
     }
     
     /**
@@ -42,12 +42,12 @@ class MigrationRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function test_getMigrationClassName($expectedClassName, $filename)
     {
-        $this->assertEquals($expectedClassName, $this->loader->getMigrationClassName($filename));
+        $this->assertEquals($expectedClassName, $this->repository->getMigrationClassName($filename));
     }
     
     public function test_createMigration()
     {
-        $migration = $this->loader->createMigration('1_FirstMigration.php');
+        $migration = $this->repository->createMigration('1_FirstMigration.php');
         $this->assertEquals(1, $migration->getVersion());
         $this->assertInternalType('int', $migration->getVersion());
         $this->assertFalse($migration->isUp());
@@ -55,13 +55,13 @@ class MigrationRepositoryTest extends \PHPUnit_Framework_TestCase
     
     public function test_getMigrations_returns_all_migrations()
     {
-        $migrations = $this->loader->getMigrations();
+        $migrations = $this->repository->getMigrations();
         $this->assertCount(2, $migrations);
     }
         
     public function test_getMigration_returns_false_if_migration_does_not_exist()
     {
-        $this->assertFalse($this->loader->getMigration(3));
+        $this->assertFalse($this->repository->getMigration(3));
     }
     
     /**
@@ -69,8 +69,17 @@ class MigrationRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function test_getMigration_returns_one_migration_of_given_version($version)
     {
-        $migration = $this->loader->getMigration($version);
+        $migration = $this->repository->getMigration($version);
         $this->assertEquals($version, $migration->getVersion());
+    }
+    
+    public function test_getMigrations_returns_ordered_list_of_results()
+    {
+        $this->repository->setPath(__DIR__ . '/fixtures/sort');
+        $migrations = $this->repository->getMigrations();
+        $this->assertEquals(5, $migrations[0]->getVersion());
+        $this->assertEquals(10, $migrations[1]->getVersion());
+        $this->assertEquals(11, $migrations[2]->getVersion());
     }
     
     public function migrationVersionProvider()

@@ -51,6 +51,7 @@ class MigrationRepository
                 $migrations[] = $this->createMigration($dir->getFilename());
             }
         }
+        usort($migrations, function($a, $b) { return $a->getVersion() - $b->getVersion(); });
         return $migrations;
     }
     
@@ -90,5 +91,10 @@ class MigrationRepository
     public function persist()
     {
         $this->storage->update(self::OPTION_NAME, $this->options);
+    }
+    
+    public function setPath($path)
+    {
+        $this->path = $path;
     }
 }
