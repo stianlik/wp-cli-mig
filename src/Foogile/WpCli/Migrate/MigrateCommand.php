@@ -110,7 +110,7 @@ class MigrateCommand
     }
     
     /**
-     * @return MigrationInterface
+     * @return MigrationProxy
      */
     private function getMigration($args, $assocArgs) {
         $loader = $this->getRepository($assocArgs);

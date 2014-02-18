@@ -78,11 +78,11 @@ class MigrationRepository
         require_once "{$this->path}/$filename";
         $className = $this->getMigrationClassName($filename);
         $version = $this->getMigrationVersion($filename);
-        $isUp = ($this->options[$version]) ? true : false;
-        return new MigrationProxy(new $className($version, $isUp), $this);
+        $isUp = !empty($this->options[$version]) ? true : false;
+        return new MigrationProxy(new $className(), $this, $version, $isUp);
     }
     
-    public function save(MigrationInterface $migration)
+    public function save(MigrationProxy $migration)
     {
         $this->options[$migration->getVersion()] = $migration->isUp();
     }

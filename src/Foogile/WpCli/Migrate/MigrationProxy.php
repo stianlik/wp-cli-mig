@@ -6,6 +6,12 @@ use Foogile\WpCli\Migrate\MigrationRepository;
 
 class MigrationProxy implements MigrationInterface
 {
+    const   STATUS_UP = true,
+            STATUS_DOWN = false;
+    
+    private $version;
+    private $status;
+    
     /**
      * @var MigrationInterface
      */
@@ -16,10 +22,12 @@ class MigrationProxy implements MigrationInterface
      */
     private $repository;
     
-    public function __construct(MigrationInterface $migration, MigrationRepository $repository)
+    public function __construct(MigrationInterface $migration, MigrationRepository $repository, $version, $status = self::STATUS_DOWN)
     {
         $this->migration = $migration;
         $this->repository = $repository;
+        $this->version = (int) $version;
+        $this->setStatus($status);
     }
 
     public function up()
@@ -36,22 +44,22 @@ class MigrationProxy implements MigrationInterface
 
     public function getVersion()
     {
-        return $this->migration->getVersion();
+        return $this->version;
     }
 
     public function isDown()
     {
-        return $this->migration->isDown();
+        return !$this->status;
     }
 
     public function isUp()
     {
-        return $this->migration->isUp();
+        return $this->status;
     }
 
     public function setStatus($status)
     {
-        $this->migration->setStatus($status);
+        $this->status = (bool) $status;
         $this->repository->save($this);
     }
 }

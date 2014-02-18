@@ -11,7 +11,9 @@ General migration command for WP-CLI
     // filename: migrations/1_FirstMigration.php
     namespace WpCliMigrate;
 
-    class FirstMigration extends \Foogile\WpCli\Migrate\AbstractMigration
+    use Foogile\WpCli\Migrate\MigrationInterface;
+
+    class FirstMigration implements MigrationInterface
     {
 
         public function up()

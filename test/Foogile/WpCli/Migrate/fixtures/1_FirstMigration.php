@@ -2,7 +2,7 @@
 
 namespace TestMigration;
 
-class FirstMigration extends \Foogile\WpCli\Migrate\AbstractMigration
+class FirstMigration implements \Foogile\WpCli\Migrate\MigrationInterface
 {
     public function down()
     {
