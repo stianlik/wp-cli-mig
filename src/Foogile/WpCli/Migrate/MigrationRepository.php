@@ -11,7 +11,7 @@ class MigrationRepository
     private $options;
     private $path;
     private $namespace;
-    private $pattern = '#([0-9]+)_([A-Z][A-Za-z0-9]*)\.php#';
+    private $pattern = '#^([0-9]+)_([A-Z][A-Za-z0-9]*)\.php#';
     
     /**
      * @var Storage
