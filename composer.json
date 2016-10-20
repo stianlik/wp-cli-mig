@@ -1,6 +1,7 @@
 {
     "name": "foogile/wp-cli-mig",
     "description": "General migration command for WP-CLI",
+    "type": "wp-cli-package",
     "homepage": "https://github.com/stianlik/wp-cli-mig/",
     "authors": [
         {
